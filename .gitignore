@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.py[cod]
+*.pt
+*.pth
+*.onnx
+*.engine
+*.npy
+*.npz
+.idea/
+.vscode/
+data/
+runs/
+third_party/
+figures/generated/
+figures/source/
+wandb/
