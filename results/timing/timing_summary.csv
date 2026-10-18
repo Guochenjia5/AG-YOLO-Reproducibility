@@ -1,0 +1,3 @@
+model,repetitions,latency_ms_mean,latency_ms_sample_sd,fps_mean,fps_sample_sd
+YOLOv11n,5,5.667,0.083,176.49,2.59
+AG-YOLO,5,7.527,0.094,132.88,1.66
