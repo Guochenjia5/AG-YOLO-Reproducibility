@@ -100,6 +100,7 @@ from ultralytics.utils.torch_utils import (
 )
 
 from ultralytics.nn.backbone.convnextv2 import *
+from ultralytics.nn.backbone.yolo_cir_reimpl import *
 from ultralytics.nn.backbone.fasternet import *
 from ultralytics.nn.backbone.efficientViT import *
 from ultralytics.nn.backbone.EfficientFormerV2 import *
@@ -128,7 +129,7 @@ except ImportError:
     thop = None
 
 
-DETECT_CLASS = (Detect, Detect_WT, TailAwareDetect, Detect_DyHead, Detect_DyHeadLite, Detect_AFPN_P2345, Detect_AFPN_P2345_Custom, Detect_AFPN_P345, Detect_AFPN_P345_Custom, Detect_Efficient, DetectAux, Detect_SEAM, Detect_MultiSEAM, 
+DETECT_CLASS = (Detect, DetectV8, DetectV8MultiSEAM, Detect_WT, TailAwareDetect, Detect_DyHead, Detect_DyHeadLite, Detect_AFPN_P2345, Detect_AFPN_P2345_Custom, Detect_AFPN_P345, Detect_AFPN_P345_Custom, Detect_Efficient, DetectAux, Detect_SEAM, Detect_MultiSEAM,
                 Detect_DyHeadWithDCNV3, Detect_DyHeadWithDCNV4, Detect_DyHead_Prune, Detect_LSCD, Detect_TADDH, Detect_LADH, Detect_LSCSBD, Detect_LSDECD, Detect_RSCD, Detect_FGIF, Detect_LQE,
                 Detect_LSCD_LQE)
 V10_DETECT_CLASS = (v10Detect,)
@@ -225,7 +226,7 @@ class BaseModel(nn.Module):
             else:
                 x = m(x)  # run
                 y.append(x if m.i in self.save else None)  # save output
-            
+
             # if type(x) in {list, tuple}:
             #     if idx == (len(self.model) - 1):
             #         if type(x[1]) is dict:
@@ -239,7 +240,7 @@ class BaseModel(nn.Module):
             # else:
             #     if not hasattr(m, 'backbone'):
             #         print(f'layer id:{idx:>2} {m.type:>50} output shape:{x.size()}')
-            
+
             if visualize:
                 feature_visualization(x, m.type, m.i, save_dir=visualize)
             if embed and m.i in embed:
@@ -417,7 +418,7 @@ class DetectionModel(BaseModel):
         self.warehouse_manager = None
         if warehouse_manager_flag:
             self.warehouse_manager = Warehouse_Manager(cell_num_ratio=self.yaml.get('Warehouse_Manager_Ratio', 1.0))
-        
+
         # Define model
         ch = self.yaml["ch"] = self.yaml.get("ch", ch)  # input channels
         if nc and nc != self.yaml["nc"]:
@@ -433,7 +434,7 @@ class DetectionModel(BaseModel):
             self.warehouse_manager.store()
             self.warehouse_manager.allocate(self)
             self.net_update_temperature(0)
-        
+
         # Build strides
         m = self.model[-1]  # Detect()
         if isinstance(m, (DETECT_CLASS + SEGMENT_CLASS + POSE_CLASS + OBB_CLASS + V10_DETECT_CLASS)):  # includes all Detect subclasses like Segment, Pose, OBB, WorldDetect
@@ -1117,9 +1118,9 @@ def parse_model(d, ch, verbose=True, warehouse_manager=None):  # model_dict, inp
             C3x, RepC3, PSA, SCDown, C2fCIB, GSConv, GSConvns, VoVGSCSP, VoVGSCSPns, VoVGSCSPC, RCSOSA, KWConv, CSPStage, SPDConv, RepBlock,
             SPPF_LSKA, CSP_EDLAN, nn.Conv2d, HWD, RepNCSPELAN4, DBBNCSPELAN4, OREPANCSPELAN4, DRBNCSPELAN4, RepNCSPELAN4_CAA, V7DownSampling,
             DGCST, RepNCSPELAN4_CAA, SRFD, DRFD, RGCSPELAN, CSP_PTB, SimpleStem, VisionClueMerge, VSSBlock_YOLO, XSSBlock, GLSA, FeaturePyramidSharedConv,
-            LDConv, CSP_MSCB, CSP_PMSFA, RFAConv, RFCBAMConv, RFCAConv, CSP_FreqSpatial, MANet, MANet_FasterBlock, MANet_FasterCGLU, 
+            LDConv, CSP_MSCB, CSP_PMSFA, RFAConv, RFCBAMConv, RFCAConv, CSP_FreqSpatial, MANet, MANet_FasterBlock, MANet_FasterCGLU,
             MANet_Star, PSConv, RepHMS, CSP_MSCB_SC, LoGStem, GSConvE, DSConv_YOLO13, wConv2d, FourierConv, Converse2D, GCConv, MANet_GCConv,
-            RepStem, ESMoE, FSConv, LFP, FSBlockC3k2, C2PSA_FSBlock, FSBlock
+            RepStem, ESMoE, FSConv, LFP, FSBlockC3k2, C2PSA_FSBlock, FSBlock, C2f_DWR
         ) + C3K2_CLASS + A2C2F_CLASS + C2PSA_CLASS):
             if args[0] == 'head_channel':
                 args[0] = d[args[0]]
@@ -1142,14 +1143,14 @@ def parse_model(d, ch, verbose=True, warehouse_manager=None):  # model_dict, inp
                 args[2] = make_divisible(min(args[2], max_channels) * width, 8)
                 args[3] = make_divisible(min(args[3], max_channels) * width, 8)
             if m in ((
-                BottleneckCSP, C1, C2, C2f, C3k2, C2fAttn, C3, C3TR, C3Ghost, C3x, RepC3, C2fPSA, C2fCIB, VoVGSCSP, VoVGSCSPns, VoVGSCSPC, RCSOSA,
+                BottleneckCSP, C1, C2, C2f, C2f_DWR, C3k2, C2fAttn, C3, C3TR, C3Ghost, C3x, RepC3, C2fPSA, C2fCIB, VoVGSCSP, VoVGSCSPns, VoVGSCSPC, RCSOSA,
                 CSPStage, SPDConv, RepBlock, CSP_EDLAN, RGCSPELAN, CSP_PTB, XSSBlock, CSP_MSCB, CSP_PMSFA, CSP_FreqSpatial, MANet,
                 MANet_FasterBlock, MANet_FasterCGLU, MANet_Star, CSP_MSCB_SC, MANet_GCConv
             ) + C3K2_CLASS + A2C2F_CLASS + C2PSA_CLASS):
                 args.insert(2, n)  # number of repeats
                 n = 1
             if m in ((C3k2,) + C3K2_CLASS) and scale in "mlx":  # for M/L/X sizes
-                if m in (C3k2_AggregatedAtt, C3k2_MSBlock, C3k2_DAttention, C3k2_FocusedLinearAttention, C3k2_Parc, C3k2_UniRepLKNetBlock, C3k2_SMPCGLU, 
+                if m in (C3k2_AggregatedAtt, C3k2_MSBlock, C3k2_DAttention, C3k2_FocusedLinearAttention, C3k2_Parc, C3k2_UniRepLKNetBlock, C3k2_SMPCGLU,
                          C3k2_Heat, C3k2_RandomMixing, C3k2_RandomMixingCGLU, C3k2_PKIModule, C3k2_FCA_CTA, C3k2_GlobalFilter, C3k2_DynamicFilter, C3k2_RMB,
                          C3k2_wConv, C3k2_FourierConv, C3k2_LWGA, C3k2_PartialNetBlock):
                     if type(args[-1]) == bool:
@@ -1201,7 +1202,7 @@ def parse_model(d, ch, verbose=True, warehouse_manager=None):  # model_dict, inp
                     args[3] = make_divisible(min(args[3], max_channels) * width, 8)
             if m in (Detect_LSCD, Detect_TADDH, Detect_LSCSBD, Detect_LSDECD, Detect_RSCD, Detect_LSCD_LQE):
                 args[1] = make_divisible(min(args[1], max_channels) * width, 8)
-            if m in (Pose_LSCD, Pose_TADDH, Pose_LSCSBD, Pose_LSDECD, Pose_RSCD, Pose_LSCD_LQE, 
+            if m in (Pose_LSCD, Pose_TADDH, Pose_LSCSBD, Pose_LSDECD, Pose_RSCD, Pose_LSCD_LQE,
                      OBB_LSCD, OBB_TADDH, OBB_LSCSBD, OBB_LSDECD, OBB_RSCD, OBB_LSCD_LQE):
                 args[2] = make_divisible(min(args[2], max_channels) * width, 8)
         elif m is RTDETRDecoder:  # special case, channels arg must be passed in index 1
@@ -1218,12 +1219,12 @@ def parse_model(d, ch, verbose=True, warehouse_manager=None):  # model_dict, inp
             c2 = ch[f[-1]]
         elif isinstance(m, str):
             t = m
-            if len(args) == 2:        
+            if len(args) == 2:
                 m = timm.create_model(m, pretrained=args[0], pretrained_cfg_overlay={'file':args[1]}, features_only=True)
             elif len(args) == 1:
                 m = timm.create_model(m, pretrained=args[0], features_only=True)
             c2 = m.feature_info.channels()
-        elif m in {convnextv2_atto, convnextv2_femto, convnextv2_pico, convnextv2_nano, convnextv2_tiny, convnextv2_base, convnextv2_large, convnextv2_huge,
+        elif m in {convnextv2_atto, convnextv2_femto, convnextv2_pico, convnextv2_nano, convnextv2_tiny, convnextv2_base, convnextv2_large, convnextv2_huge, yolo_cir_reimpl_m,
                    fasternet_t0, fasternet_t1, fasternet_t2, fasternet_s, fasternet_m, fasternet_l,
                    EfficientViT_M0, EfficientViT_M1, EfficientViT_M2, EfficientViT_M3, EfficientViT_M4, EfficientViT_M5,
                    efficientformerv2_s0, efficientformerv2_s1, efficientformerv2_s2, efficientformerv2_l,
@@ -1254,9 +1255,9 @@ def parse_model(d, ch, verbose=True, warehouse_manager=None):  # model_dict, inp
                    TripletAttention, CoordAtt, CBAM, BAMBlock, LSKBlock, ScConv, LAWDS, EMSConv, EMSConvP,
                    SEAttention, CPCA, Partial_conv3, FocalModulation, EfficientAttention, MPCA, deformable_LKA,
                    EffectiveSEModule, LSKA, SegNext_Attention, DAttention, MLCA, TransNeXt_AggregatedAttention,
-                   FocusedLinearAttention, LocalWindowAttention, ChannelAttention_HSFPN, ELA_HSFPN, CA_HSFPN, CAA_HSFPN, 
-                   DySample, CARAFE, CAA, ELA, CAFM, AFGCAttention, EUCB, EfficientChannelAttention, ContrastDrivenFeatureAggregation, 
-                   FSA, AttentiveLayer, EUCB_SC, NAFB, DI_SpAM}:
+                   FocusedLinearAttention, LocalWindowAttention, ChannelAttention_HSFPN, ELA_HSFPN, CA_HSFPN, CAA_HSFPN,
+                   DySample, CARAFE, CAA, ELA, CAFM, AFGCAttention, EUCB, EfficientChannelAttention, ContrastDrivenFeatureAggregation,
+                   FSA, AttentiveLayer, EUCB_SC, NAFB, DI_SpAM, CIRSpatialAttention, CIRChannelAttention, CIRSplitAttention}:
             c2 = ch[f]
             args = [c2, *args]
             # print(args)
@@ -1414,7 +1415,7 @@ def parse_model(d, ch, verbose=True, warehouse_manager=None):  # model_dict, inp
             c1 = ch[f[1]]
             c2 = args[0]
             c2 = make_divisible(min(c2, max_channels) * width, 8)
-            he = args[1] 
+            he = args[1]
             if scale in "n":
                 he = int(args[1] * 0.5)
             elif scale in "x":

@@ -1,110 +1,144 @@
-# AG-YOLO reproducibility code
+# AG-YOLO revision experiment helpers
 
-This repository contains the essential source files required to build AG-YOLO,
-run the principal Night-Drone Vehicle and HIT-UAV experiments, apply the
-DontCare-aware HIT-UAV evaluator, and repeat the latency benchmark.
+These files address evidence that was absent from the archived project. They do
+not create replacement numbers without running the required experiments.
 
-## Included files
+## 1. Paired multi-seed Night-Drone Vehicle runs
 
-- `model/`: AG-YOLO model configuration and the required Ultralytics module/parser changes.
-- `scripts/`: dataset preparation, training, evaluation, and timing scripts.
-- `results/`: compact result tables reported in the revised manuscript.
-- `requirements.txt`: recorded Python package versions.
-
-Datasets, pretrained weights, trained checkpoints, prediction folders, detailed
-per-image metrics, and third-party repositories are not redistributed.
-
-## Environment
-
-The recorded experiments used Python 3.9, PyTorch 2.1.2 with CUDA 11.8, and
-Ultralytics 8.3.9.
-
-```bash
-python -m venv .venv
-source .venv/bin/activate  # Windows PowerShell: .venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-```
-
-Clone the compatible Ultralytics source tree and overlay the files in `model/`:
-
-```bash
-git clone --branch v8.3.9 https://github.com/ultralytics/ultralytics.git third_party/ultralytics
-cp -R model/ultralytics/. third_party/ultralytics/ultralytics/
-python -m pip install -e third_party/ultralytics
-```
-
-PowerShell equivalent:
+Run from the AG-YOLO repository with the CUDA environment:
 
 ```powershell
-git clone --branch v8.3.9 https://github.com/ultralytics/ultralytics.git third_party/ultralytics
-Copy-Item -Recurse -Force model\ultralytics\* third_party\ultralytics\ultralytics\
-python -m pip install -e third_party/ultralytics
+$env:PYTHONPATH='D:\gcj\ultralytics-yolo11-main'
+& 'D:\Anaconda3\envs\learn_cuda\python.exe' `
+  '.\run_multiseed_night_drone.py' --seeds 0 1 2 --device 0
 ```
 
-## Night-Drone Vehicle
+The script reruns both models with identical optimizer, AMP, worker, early-stop,
+input-size, and validation settings. For consistency with the original
+manuscript tables, the reported revision retains the archived Table 7 seed-0
+values and uses only seeds 1 and 2 from the new launcher. Generate that explicit
+reporting view with:
 
-Prepare an Ultralytics detection YAML for the dataset, then run:
-
-```bash
-python scripts/run_multiseed_night_drone.py \
-  --repo third_party/ultralytics \
-  --data data/night-drone/dataset.yaml \
-  --output runs/night-drone-multiseed \
-  --seeds 0 1 2 --device 0 --epochs 300 --batch 32 --imgsz 640 --workers 4
+```powershell
+& 'D:\Anaconda3\envs\learn_cuda\python.exe' `
+  '.\combine_nightdrone_reported_runs.py' `
+  --additional-results 'D:\gcj\night-drone-revision-multiseed\paired_results.csv' `
+  --output-dir '.\'
 ```
 
-The compact reported-run and mean/standard-deviation tables are under
-`results/night_drone/`.
+The resulting `nightdrone_reported_runs.csv` labels the source of every row,
+and `nightdrone_reported_summary.csv` contains the manuscript means and sample
+standard deviations. Because seed 0 came from the archived manuscript run while
+seeds 1 and 2 came from the additional launcher, the dispersion can include
+minor configuration effects as well as random-seed variation. The manuscript
+and response letter state this limitation explicitly.
 
-## HIT-UAV four-class plus DontCare protocol
+## 2. HIT-UAV four-class plus DontCare workflow
 
-Prepare the dataset from the official HIT-UAV images and JSON annotations:
+For the complete author-published split, first download the official JSON files
+and run:
 
-```bash
-python scripts/prepare_hituav_ignore_dataset.py \
-  --source data/hit-uav --output data/hit-uav-ignore
+```powershell
+D:\Anaconda3\envs\learn_cuda\python.exe prepare_hituav_official_fourclass.py `
+  --prepared 'D:\gcj\hit-uav-ignore' `
+  --json-root '..\official-hituav' `
+  --output 'D:\gcj\hit-uav-official-ignore'
 
-python scripts/prepare_hituav_official_fourclass.py \
-  --prepared data/hit-uav-ignore \
-  --json-root official-hituav \
-  --output data/hit-uav-official-ignore
+D:\Anaconda3\envs\learn_cuda\python.exe audit_hituav_official_protocol.py `
+  --dataset 'D:\gcj\hit-uav-official-ignore'
 ```
 
-Run the comparison launcher:
+The builder adds only the 32 zero-annotation images absent from the local YOLO
+conversion and records the official JSON SHA-256 values. The audit verifies
+every class and box coordinate against the original JSON files. The completed
+audit covered all 2,898 images and 24,899 annotations, found zero mismatches,
+and recorded a maximum normalized-coordinate error of 5.0e-9. Run all 13
+manuscript comparisons with:
 
-```bash
-python scripts/run_hituav_official_protocol.py \
-  --dataset data/hit-uav-official-ignore/dataset_ignore.yaml \
-  --output runs/hituav-official-4class --device 0
+```powershell
+D:\Anaconda3\envs\learn_cuda\python.exe run_hituav_official_protocol.py `
+  --dataset 'D:\gcj\hit-uav-official-ignore\dataset_ignore.yaml' `
+  --output 'D:\gcj\hituav-official-4class' --device 0
 ```
 
-The evaluator removes predictions whose intersection-over-prediction-area is at
-least 0.5 against a DontCare region and then computes four-class 101-point AP:
+Prepare a separate dataset view:
 
-```bash
-python scripts/evaluate_hituav_ignore.py \
-  --gt-root data/hit-uav-official-ignore \
-  --pred-root runs/example/predictions/labels \
+```powershell
+python .\prepare_hituav_ignore_dataset.py `
+  --source 'D:\gcj\hit-uav' --output 'D:\gcj\hit-uav-ignore'
+```
+
+Train against `D:\gcj\hit-uav-ignore\dataset_ignore.yaml`. Generate normalized
+prediction text files with confidence scores, one file per evaluated image, then
+evaluate them:
+
+```powershell
+python .\evaluate_hituav_ignore.py `
+  --gt-root 'D:\gcj\hit-uav-ignore' `
+  --pred-root 'D:\path\to\predictions\labels' `
   --split test --ignore-ioa 0.5
 ```
 
-The 13-run aggregate table is `results/hit_uav/fourclass_results.csv`.
+The evaluator removes detections whose intersection divided by prediction area
+is at least 0.5 against any DontCare box, then reports four-class 101-point AP at
+IoU 0.50 and at 0.50:0.95. This rule is explicit and class agnostic. The
+included `official_protocol_manifest.json` records the official JSON hashes,
+and `official_protocol_audit.json` records the passed coordinate-level audit.
+The HIT-UAV repository's `AP.py` is marked unfinished, so the manuscript names
+this explicit reviewer-aligned evaluator instead of claiming output from a
+completed author-supplied reference evaluator.
 
-## Latency benchmark
+All 13 manuscript runs reached 300 epochs. The package includes the aggregate
+`fourclass_results.csv`, per-run metric JSON files, and per-class CSV files.
+Large checkpoints and 579-image prediction-label directories are retained in
+the experiment archive and are intentionally not duplicated in this compact
+review package.
 
-```bash
-python scripts/benchmark_latency_repeat.py \
-  --weights path/to/best.pt --model-name AG-YOLO \
-  --output runs/timing/ag-yolo_fp32_bs1.json
+## 3. Timing
+
+`benchmark_latency_repeat.py` and the saved JSON/CSV files use batch 1, FP32,
+640 by 640 synthetic inputs, 200 warm-up iterations, and five repetitions of
+1,000 synchronized forward passes. Disk I/O, preprocessing, decoding, and NMS
+are excluded.
+
+## 4. Model files and package layout
+
+The `model/` directory contains the exact AG-YOLO YAML and the modified
+Ultralytics 8.3.9 parser and extra-module files used by the experiments. The
+`scripts/` directory contains the launch, conversion, audit, evaluation,
+timing, and figure-generation helpers. The `results/` directory contains the
+compact CSV/JSON evidence used in the revised manuscript. Dataset images,
+large checkpoints, and prediction-label directories are excluded from this
+review package; their locations and completion checks are recorded in the
+result manifests and manuscript evidence log.
+
+## 5. Night-Drone Vehicle specialist applicability tests
+
+The revised manuscript includes explicitly labeled independent reimplementations
+of YOLO-CIR and YOLO-HVS. These are paper-guided, same-data applicability tests,
+not author-official implementations or exact reproductions. No executable author
+code or weights were available for either method.
+
+Run the two launchers from the compatible Ultralytics source tree:
+
+```powershell
+python scripts/run_yolo_cir_night_drone.py --output runs/yolo-cir --seeds 0 `
+  --device 0 --epochs 300 --batch 8 --imgsz 640 --workers 4 --no-amp
+
+python scripts/run_yolo_hvs_night_drone.py --output runs/yolo-hvs --seeds 0 `
+  --device 0 --epochs 300 --batch 32 --imgsz 640 --workers 4 --no-amp
 ```
 
-The benchmark covers the fused PyTorch forward pass only; preprocessing,
-decoding, NMS, and disk I/O are excluded. A compact summary is provided in
-`results/timing/timing_summary.csv`.
+Table 7 uses an independent validation pass on each final-epoch `last.pt`
+checkpoint. The saved `final_epoch_results.csv` files report YOLO-CIR at
+0.7814 mAP@0.5 and 0.5931 mAP@0.5:0.95, and YOLO-HVS at 0.7881 and 0.6008.
+The original best-checkpoint validation summaries are retained separately for
+provenance and are not the values used in Table 7. YOLO-CIR uses physical batch
+8 because larger FP32 batches were not stable on the available Windows GPU
+memory-management path; YOLO-HVS uses physical batch 32. The protocol and audit
+JSON files record initialization choices, architectural ambiguities, source
+paper DOIs, and model-complexity measurements.
 
-## License
-
-This repository is released under AGPL-3.0. Files derived from Ultralytics retain
-the same license obligations. Dataset licenses remain with the original
-publishers; see `THIRD_PARTY_NOTICES.md`.
+The per-epoch CSV files are included so that Figure 8 can be regenerated with
+the updated `generate_vector_training_curves.py` script. The two specialist
+curves are drawn with dashed lines in the manuscript figure.

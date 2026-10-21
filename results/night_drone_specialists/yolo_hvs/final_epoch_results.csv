@@ -1,0 +1,2 @@
+model,seed,precision,recall,mAP50,mAP50_95,checkpoint,checkpoint_policy
+YOLO-HVS independent reimplementation,0,0.7769855281520537,0.7495638976232554,0.7880604171742284,0.6008098302814405,D:\gcj\night-drone-yolo-hvs-reimpl-b32-fp32\yolo_hvs_reimpl_seed0\weights\last.pt,final_epoch

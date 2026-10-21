@@ -1,0 +1,452 @@
+[
+  {
+    "path": "model/ultralytics/cfg/models/11/yolo-cir-reimpl.yaml",
+    "size": 1139,
+    "sha256": "38ec631241ecdfdd841eaf3a1e6ba7f5c15fa24a8fdf729118b27e73ac2c63d8"
+  },
+  {
+    "path": "model/ultralytics/cfg/models/11/yolo11-MAN-CTA-C2CGA.yaml",
+    "size": 1209,
+    "sha256": "3bab2fefda1457b60ed768e754636b6bfee86f3b0950186eda908974368cead7"
+  },
+  {
+    "path": "model/ultralytics/cfg/models/11/yolov8-hvs-baseline.yaml",
+    "size": 845,
+    "sha256": "49edec74a2f27c1f881ea93060d0a72d33fe9bb9cd7d8093cb414a46b659f604"
+  },
+  {
+    "path": "model/ultralytics/cfg/models/11/yolov8-hvs-reimpl.yaml",
+    "size": 989,
+    "sha256": "cd0bb71a057f82aaef6bea27b966d4c9a75d99bfe12359e21d243a7e435998e7"
+  },
+  {
+    "path": "model/ultralytics/nn/backbone/yolo_cir_reimpl.py",
+    "size": 7293,
+    "sha256": "e3f92d6a6cdc77e42cb3bc2def7dc8af381325246e25a7a6a169e592d87b026e"
+  },
+  {
+    "path": "model/ultralytics/nn/extra_modules/__init__.py",
+    "size": 1095,
+    "sha256": "042bafb68e24d3967be92e212c14a10d229433df23a7385cca54535a64273fe9"
+  },
+  {
+    "path": "model/ultralytics/nn/extra_modules/block.py",
+    "size": 691167,
+    "sha256": "b96fd388bda435a7d04d3c7691aa5b41a940996d6de886cb74c468576b947caa"
+  },
+  {
+    "path": "model/ultralytics/nn/extra_modules/head.py",
+    "size": 112939,
+    "sha256": "9064ff686d2b2e25813c29b73740ad5975946317488d2661f57ee6e9768e6bd4"
+  },
+  {
+    "path": "model/ultralytics/nn/extra_modules/transformer.py",
+    "size": 64455,
+    "sha256": "f9c00fc967a68fc5ae49246b82a4fb4bbdf4da831acff12a8b5fc3e05b3a6de4"
+  },
+  {
+    "path": "model/ultralytics/nn/tasks.py",
+    "size": 74314,
+    "sha256": "e5d22121e6f76e9823cbf83c66a41d966966fb4f01eaea56788fb41ec677fd6f"
+  },
+  {
+    "path": "notes/YOLO_CIR_REIMPLEMENTATION.md",
+    "size": 1723,
+    "sha256": "060e399fd9906182fe09ee542d6f5f76acaed6bfc0141ff8cbeb548bff1bec4f"
+  },
+  {
+    "path": "README.md",
+    "size": 6475,
+    "sha256": "964166d11e4ab9d26f502dfd01890bda1efe55877a5647e2ce91165e9bba95e9"
+  },
+  {
+    "path": "results/hit_uav/dataset_ignore.yaml",
+    "size": 156,
+    "sha256": "f588865d9f91be09830058fc30f0d6bf1501b47dc5e52b056c3b9140edcc12ad"
+  },
+  {
+    "path": "results/hit_uav/fourclass_results.csv",
+    "size": 4087,
+    "sha256": "c8617a9769cae82a5e172d2e98b31fcfcdae1c7fd6e35ccb2494e2dd94309f96"
+  },
+  {
+    "path": "results/hit_uav/metrics/ag_yolo_seed0.json",
+    "size": 2964,
+    "sha256": "9b98e15c3fa43bbf5648c1fc493ef33816c2a5b4b37b662a0224fb6bf3f4bf6b"
+  },
+  {
+    "path": "results/hit_uav/metrics/ag_yolo_seed0_per_class.csv",
+    "size": 508,
+    "sha256": "b8f83efa1026e86654fd43e6a870417b4604cf6438b60b08a09074cee05440bc"
+  },
+  {
+    "path": "results/hit_uav/metrics/ag_yolo_seed1.json",
+    "size": 2967,
+    "sha256": "9b6b24d4713f23a61f58a02c2cd4a0df20096e3b0f6a294473091b6b7ede3861"
+  },
+  {
+    "path": "results/hit_uav/metrics/ag_yolo_seed1_per_class.csv",
+    "size": 511,
+    "sha256": "89dc832bc05e4b80826438d4d56c0c73933641f83c4e8c94f04ea71de5222c8b"
+  },
+  {
+    "path": "results/hit_uav/metrics/ag_yolo_seed2.json",
+    "size": 2968,
+    "sha256": "683e5c9f818d235437c47f8f5cb1ace93cc354a87f91f744e7ac5af73dfa5ab0"
+  },
+  {
+    "path": "results/hit_uav/metrics/ag_yolo_seed2_per_class.csv",
+    "size": 512,
+    "sha256": "812302811211fcf083aa5561ba8849edfd45bb597f9565397d911ef32e9043c7"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov10n_seed0.json",
+    "size": 2968,
+    "sha256": "4ec4a212eee5925a4abe42a1a48bb83852ffdf47b68353e67ee82cf6f67e8a37"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov10n_seed0_per_class.csv",
+    "size": 512,
+    "sha256": "16204c8b75b43924310316fc740f93d07e14763becef15c04cce1b4bc1f06ac8"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov11n_seed0.json",
+    "size": 2969,
+    "sha256": "a199d51038cdecbcd0c5c64228d87b801d70bb57ee21bd62fd9bdf16ba57922f"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov11n_seed0_per_class.csv",
+    "size": 513,
+    "sha256": "79e35f88d838f2b8e79a83fae947f42de3a9f7949d0eb4ad9ea665d8ee6eea4a"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov11n_seed1.json",
+    "size": 2982,
+    "sha256": "1b7ab4f069a16575fb9c1bf29fb398478d489082a1f6e516ff57117e674d77d1"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov11n_seed1_per_class.csv",
+    "size": 513,
+    "sha256": "c64e90c696546a5e8c904b79bfcfc47a98f64fb6a3dcc72ee57219ea659d0e86"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov11n_seed2.json",
+    "size": 2969,
+    "sha256": "f775aec6ef8723c240f4a4db7a92c3fcfb8807f29c6207b0971e6436595c217d"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov11n_seed2_per_class.csv",
+    "size": 513,
+    "sha256": "ed7c91ca1e78fcfb4e9f52fb212b62dd6f09ae2419293672d377dccb409a430e"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov12n_seed0.json",
+    "size": 2967,
+    "sha256": "655f40d31dc744d294f9b1b38e988fbca557cd2585091e45e4acbef8dc9e85c8"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov12n_seed0_per_class.csv",
+    "size": 511,
+    "sha256": "f385681850440cb967b9c744f42bd53b1d71c559c7a96ccad1e77dcc94cee2b2"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov13n_seed0.json",
+    "size": 2983,
+    "sha256": "3322083a4d58debfc78b706d8b2f5f03faca590b84c1cf71edd280141ab5444b"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov13n_seed0_per_class.csv",
+    "size": 513,
+    "sha256": "5e434b4b41a12be757bea912744df83627f50be4c7b7fca30d1b7daccfc97a34"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov5n_seed0.json",
+    "size": 2972,
+    "sha256": "b359d22f6a5cb5aebce8bcec3903be82a4b83eacd67e96d350605ae4b8059f88"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov5n_seed0_per_class.csv",
+    "size": 516,
+    "sha256": "2e05468177c3a947c6d21f72b7ba02d1bcb43888372d832854218342444823a9"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov6n_seed0.json",
+    "size": 2970,
+    "sha256": "d4f2916ee14fd3447ee3158e6f257016f308d58755b16f9c5063e7f58e1a0f2e"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov6n_seed0_per_class.csv",
+    "size": 514,
+    "sha256": "309a938e5e5e987fb3e9dd4996e15eff650744cb92f7f5a4da98ecc9b171157f"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov8n_seed0.json",
+    "size": 2955,
+    "sha256": "4c0398c105b1325fe97a69a2522073c0045e34653703c9adfa78f61de46f4ead"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov8n_seed0_per_class.csv",
+    "size": 499,
+    "sha256": "ceb2c3dde5d17821f568598656e80198779f5e6a4ad645c5a631a855f0ea361e"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov9t_seed0.json",
+    "size": 2968,
+    "sha256": "d945cad36faf4c8f3cc071935531d2576d1a808d1c8a502fcff32dfd827377de"
+  },
+  {
+    "path": "results/hit_uav/metrics/yolov9t_seed0_per_class.csv",
+    "size": 512,
+    "sha256": "c9c471107e3d0dfae664ea68c43f61246971d03fe524e2899a6f9023f66d9c39"
+  },
+  {
+    "path": "results/hit_uav/official_protocol_audit.json",
+    "size": 961,
+    "sha256": "ce2ea186726dd6aad39350fcaffa22597006d2dd7242cfb3c263be4557b0cdc0"
+  },
+  {
+    "path": "results/hit_uav/official_protocol_manifest.json",
+    "size": 2594,
+    "sha256": "f607d79efa355dafce513f6a0a3c541d685ac2f20b2ca9ca05736e30995fcf8d"
+  },
+  {
+    "path": "results/hit_uav/official_protocol_plan.json",
+    "size": 1545,
+    "sha256": "54ac6bf0c65cc47650bc4015b2189539be37d52b765951e25d37c2a54bb120be"
+  },
+  {
+    "path": "results/hit_uav/protocol_ag_yolo.json",
+    "size": 901,
+    "sha256": "b9b482a02208b8f5b2938bf104d25269f8cb2e0b322e61a72c5bf94970b08cbf"
+  },
+  {
+    "path": "results/hit_uav/protocol_yolov10n.json",
+    "size": 850,
+    "sha256": "950c31b9b57604b801f174f185d24fcefd234c0d5cc177a17f988d84786bc28a"
+  },
+  {
+    "path": "results/hit_uav/protocol_yolov11n.json",
+    "size": 888,
+    "sha256": "9b2ac2c7110a8598925a5ec38565a7f373f46cefdf303a750e26907cd028c0a9"
+  },
+  {
+    "path": "results/hit_uav/protocol_yolov12n.json",
+    "size": 881,
+    "sha256": "03b7e1c5e0b9e9ff95822aa18714c0e7ca26a1edfdf721f36cb0a6bbe3e4c2e4"
+  },
+  {
+    "path": "results/hit_uav/protocol_yolov13n.json",
+    "size": 881,
+    "sha256": "da9b947f3fb51c2f56011c5e0ff5c0c459204c10c7ed983cd73885d49e93730c"
+  },
+  {
+    "path": "results/hit_uav/protocol_yolov5n.json",
+    "size": 846,
+    "sha256": "befe93c4eb18a098a0dcb080dfc7d3ce5c1daac69beb5d7fa5bddba6aeb24bab"
+  },
+  {
+    "path": "results/hit_uav/protocol_yolov6n.json",
+    "size": 846,
+    "sha256": "5f6a83c5cf6abde7188d17ab8784362ca6665ae895842795a6362800f759886e"
+  },
+  {
+    "path": "results/hit_uav/protocol_yolov8n.json",
+    "size": 846,
+    "sha256": "e3b380a0a7dc7110107a2ecb2db8d05a7da2abe30cffd3438a7d54db5e265418"
+  },
+  {
+    "path": "results/hit_uav/protocol_yolov9t.json",
+    "size": 847,
+    "sha256": "f080417e29bf4154a69884fe27621eed4cf1fae83ae85b48d1fd582da69f0157"
+  },
+  {
+    "path": "results/night_drone/nightdrone_reported_runs.csv",
+    "size": 578,
+    "sha256": "e0c79bf66d38390ce5fda5843829223475e5a837d35f1cc29d9e2cc3fcdc4f65"
+  },
+  {
+    "path": "results/night_drone/nightdrone_reported_summary.csv",
+    "size": 472,
+    "sha256": "e7c224db87c7235a54afdc316609ac97c386a97385bdda5d342ee1b045c4a2a9"
+  },
+  {
+    "path": "results/night_drone/paired_results.csv",
+    "size": 983,
+    "sha256": "57694caee6d3b65dc7f4be8b019c3e86e5045ad18c73c24711fcdf3f421b641b"
+  },
+  {
+    "path": "results/night_drone/protocol.json",
+    "size": 551,
+    "sha256": "068c62179f36cd3f6b8e9db189ca91bbb83c7287917c642c0f37595d7c2e8d70"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_cir/best_checkpoint_validation_results.csv",
+    "size": 238,
+    "sha256": "9d0dd448a121c79f04eae2a18f39b39657f6ea7dca03695a419effd990f4c88c"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_cir/final_epoch_results.csv",
+    "size": 280,
+    "sha256": "cb92253962baf68a87e80ef3a7e925d7c875694a8d451983bed42655e817cc00"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_cir/protocol.json",
+    "size": 776,
+    "sha256": "167db986fd1d4a605825c9eb72e1f74c8b4f413ff1d81ecf2c46d0e27979a681"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_cir/reimplementation_audit.json",
+    "size": 1348,
+    "sha256": "a2675229954e502c1d503a8730807e7fd2190dca0c0504e605af96e1e95573df"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_cir/training_results.csv",
+    "size": 35303,
+    "sha256": "13985492760e9338e95881329a910eddc02977f6219f533b2a680d2f608f3498"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_hvs/best_checkpoint_validation_results.csv",
+    "size": 252,
+    "sha256": "45a2a64a381556d09b591d4aba4fcad98f771b2633c87f139ef6ecc0f14ce0cf"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_hvs/final_epoch_results.csv",
+    "size": 282,
+    "sha256": "88fd4a175d1333810843f8ed79e0da3cf22ea8847234a814d4e612a07176c66b"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_hvs/protocol.json",
+    "size": 1228,
+    "sha256": "3f43fbb8188f4e19156f9ef5dfb37c2424729474d118418872efee2e7902f4f9"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_hvs/reimplementation_audit.json",
+    "size": 9943,
+    "sha256": "951f9c93f0becc1a300128341882a3a3b129e30f7432b1d0b801cd951bd9ad2f"
+  },
+  {
+    "path": "results/night_drone_specialists/yolo_hvs/training_results.csv",
+    "size": 35326,
+    "sha256": "491e26a108ac80ea70f57b855d8b984c563f8389ab765fae12af1a1d9bf29f89"
+  },
+  {
+    "path": "results/timing/ag-yolo_fp32_bs1.csv",
+    "size": 540,
+    "sha256": "7acdf70d2b8b21d911be721c9cdfed50f6586b444e0b0e8aaba45c94fa3fb3f6"
+  },
+  {
+    "path": "results/timing/ag-yolo_fp32_bs1.json",
+    "size": 2196,
+    "sha256": "0fed59bf09037b790ec564b2e77ced81b697e93d6390d99d5c15ac72297ebe7d"
+  },
+  {
+    "path": "results/timing/ag_yolo_console.log",
+    "size": 1439,
+    "sha256": "d189fa17e86548230224268730f73feea0265bb2bebcb9eb5a4a07ecdbc8b302"
+  },
+  {
+    "path": "results/timing/yolov11n_console.log",
+    "size": 1874,
+    "sha256": "f623f2cc60723e3f7a5425bde0c9c6c3acab8015cfdcb84f1910500bee3a5323"
+  },
+  {
+    "path": "results/timing/yolov11n_fp32_bs1.csv",
+    "size": 536,
+    "sha256": "44c63230f3d8ab9742096dc5de7b0600d9bab849caf0d21099a77e9dd30f8609"
+  },
+  {
+    "path": "results/timing/yolov11n_fp32_bs1.json",
+    "size": 2191,
+    "sha256": "168383b0532a3c5885df73637028a8827aa21483cf9a671b9e1bfaaedaedcf2e"
+  },
+  {
+    "path": "scripts/audit_hituav_official_protocol.py",
+    "size": 5146,
+    "sha256": "64c3595214598263267af6841ee3fc40e693289ec6ab77a6e6239f11d3e50d66"
+  },
+  {
+    "path": "scripts/benchmark_latency_repeat.py",
+    "size": 4630,
+    "sha256": "6b0eb55f2f3fc1a369dc813179f959a70b263303462f6468f756914c01f7d2b7"
+  },
+  {
+    "path": "scripts/combine_nightdrone_reported_runs.py",
+    "size": 3044,
+    "sha256": "48177000f0f2b6ffa4bbcfaf3d215d8553d41fb60a0e334a205ac16fef0716c4"
+  },
+  {
+    "path": "scripts/evaluate_hituav_ignore.py",
+    "size": 12368,
+    "sha256": "065a1730f420bf3c887fb38793d93251785b922f6f8b0af691f5e9f267f0c2a9"
+  },
+  {
+    "path": "scripts/generate_hituav_vector_training_curves.py",
+    "size": 4151,
+    "sha256": "d9b33983a9f6c1ed25bc7561f48684de3f8f7052b34c7ea2210d3688246f945b"
+  },
+  {
+    "path": "scripts/generate_vector_architecture_diagrams.py",
+    "size": 14343,
+    "sha256": "97be8be44064b7e1dea902d477134b552bbd1321ca9ba0ce0c35157b0820dc97"
+  },
+  {
+    "path": "scripts/generate_vector_training_curves.py",
+    "size": 4930,
+    "sha256": "e09335b61590ede8cee102649c626bf0c39f01d30c5f36021d712d9f280d5fc5"
+  },
+  {
+    "path": "scripts/prepare_hituav_ignore_dataset.py",
+    "size": 5497,
+    "sha256": "9141f3b7295cb854a96ddb515eb0bb8947119b69d63124ed85197a86b0254f72"
+  },
+  {
+    "path": "scripts/prepare_hituav_official_fourclass.py",
+    "size": 7787,
+    "sha256": "df424a89336a0313ce77c0567c6f7f65058ba41c4bbba559a2e9520afc520b4b"
+  },
+  {
+    "path": "scripts/reflow_multipanel_figures.py",
+    "size": 4263,
+    "sha256": "9ea52a6b3a26ef1c5420bfaa313819b8336e05cd4bd4ce9715ba696ceb7194f5"
+  },
+  {
+    "path": "scripts/run_hituav_fourclass_comparison.py",
+    "size": 4713,
+    "sha256": "1191d1152458b4b6aedb7cfd268a4a2033689dbfd6d1c6bc304d6f52269fdab5"
+  },
+  {
+    "path": "scripts/run_hituav_fourclass_remaining.py",
+    "size": 3847,
+    "sha256": "16445f75bb9dae06cef563d4dc79221d39df03e61b7c4a0848e60b05e3bf4f93"
+  },
+  {
+    "path": "scripts/run_hituav_official_protocol.py",
+    "size": 2037,
+    "sha256": "ec6377ad3760c3442cb5177b8b4b5843ad1482b6d6521d3495fb76c2318b6623"
+  },
+  {
+    "path": "scripts/run_multiseed_night_drone.py",
+    "size": 6869,
+    "sha256": "02629c3e8f7516bd0f1f5ff39bc0f662b4599ddd16ea3667df93f237516665b7"
+  },
+  {
+    "path": "scripts/run_yolo_cir_night_drone.py",
+    "size": 12303,
+    "sha256": "5b3e6e0d323095070f4e83a171410fded497820d629f8e21f9b3e4bc34834cf3"
+  },
+  {
+    "path": "scripts/run_yolo_hvs_night_drone.py",
+    "size": 15655,
+    "sha256": "becc205cd5d18b78094d79b981695a9f535e1560929a6d5d48933a61c7280849"
+  },
+  {
+    "path": "scripts/train_hituav_fourclass_model.py",
+    "size": 9214,
+    "sha256": "3ea5dce7f280495aaf3ff66724adafa157b189c2d510eb6d88065e5fbd3ab336"
+  },
+  {
+    "path": "scripts/validate_final_epoch_specialists.py",
+    "size": 2872,
+    "sha256": "fef1e14e96fde18770a3126be070cefdb6382a2196bf544886c0516625b2c1dc"
+  }
+]

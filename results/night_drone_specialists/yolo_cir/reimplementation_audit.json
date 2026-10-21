@@ -1,0 +1,48 @@
+{
+  "status": "independent_reimplementation",
+  "official_author_code": false,
+  "paper": "YOLO-CIR: The network based on YOLO and ConvNeXt for infrared object detection",
+  "doi": "10.1016/j.infrared.2023.104703",
+  "publicly_disclosed_components": [
+    "YOLOv5m basis",
+    "modified ConvNeXt backbone",
+    "coordinate attention inside ConvNeXt blocks",
+    "spatial attention on shallow features",
+    "channel attention on deep features",
+    "split attention in the neck"
+  ],
+  "implementation_choices_not_uniquely_specified_by_paper": {
+    "convnext_stage_depths": [
+      3,
+      3,
+      9,
+      3
+    ],
+    "convnext_stage_channels": [
+      80,
+      160,
+      320,
+      640
+    ],
+    "detection_strides": [
+      8,
+      16,
+      32
+    ],
+    "split_attention_radix": 2,
+    "neck_block": "Ultralytics C3",
+    "detection_head": "Ultralytics anchor-free Detect"
+  },
+  "model_parameters": 36318690,
+  "model_gflops_at_640": 83.3,
+  "backbone_initialization": {
+    "source": "timm convnext_nano.d1h_in1k",
+    "checkpoint": "D:\\gcj\\pretrained-cache\\convnext_nano.d1h_in1k.pth",
+    "sha256": "71e17d68dc94993c3e14260e012fa1aa507a76863f6b7dde94e8e61672ecf43b",
+    "loaded_tensors": 142,
+    "loaded_parameters": 14951280,
+    "backbone_parameters": 19603610,
+    "missing_tensors": 198,
+    "unexpected_tensors": 0
+  }
+}

@@ -13,8 +13,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 CORE = HERE / "run_hituav_fourclass_comparison.py"
 REMAINING = HERE / "run_hituav_fourclass_remaining.py"
-DATASET = Path("data/hit-uav-official-ignore/dataset_ignore.yaml")
-DEFAULT_OUTPUT = Path("runs/hituav-official-4class")
+DATASET = Path(r"D:\gcj\hit-uav-official-ignore\dataset_ignore.yaml")
+DEFAULT_OUTPUT = Path(r"D:\gcj\hituav-official-4class")
 
 
 def main() -> None:

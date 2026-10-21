@@ -42,7 +42,7 @@ linearnorm = partial(LinearNorm, norm1=ln, norm2=RepBN, step=60000)
 class TransformerEncoderLayer_RepBN(TransformerEncoderLayer):
     def __init__(self, c1, cm=2048, num_heads=8, dropout=0, act=..., normalize_before=False):
         super().__init__(c1, cm, num_heads, dropout, act, normalize_before)
-        
+
         self.norm1 = linearnorm(c1)
         self.norm2 = linearnorm(c1)
 
@@ -80,44 +80,44 @@ class AIFI_RepBN(TransformerEncoderLayer_RepBN):
 class BRABlock(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.attn = BiLevelRoutingAttention_nchw(dim=c)
 
 class C2BRA(C2PSA):
     def __init__(self, c1, c2, n=1, e=0.5):
         super().__init__(c1, c2, n, e)
-        
+
         self.m = nn.Sequential(*(BRABlock(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 class CGABlock(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.attn = LocalWindowAttention(dim=c)
 
 class C2CGA(C2PSA):
     def __init__(self, c1, c2, n=1, e=0.5):
         super().__init__(c1, c2, n, e)
-        
+
         self.m = nn.Sequential(*(CGABlock(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 class DABlock(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.attn = DAttention(c, q_size=[20, 20])
 
 class C2DA(C2PSA):
     def __init__(self, c1, c2, n=1, e=0.5):
         super().__init__(c1, c2, n, e)
-        
+
         self.m = nn.Sequential(*(DABlock(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## CrossFormer start ########################################
 
 class DynamicPosBias(nn.Module):
     r"""DPB module
-    
+
     Use a MLP to predict position bias used in attention.
     """
     def __init__(self, dim, num_heads, residual):
@@ -177,7 +177,7 @@ class DPB_Attention(nn.Module):
 
         if position_bias:
             self.pos = DynamicPosBias(self.dim // 4, self.num_heads, residual=False)
-            
+
             # generate mother-set
             position_bias_h = torch.arange(1 - self.group_size[0], self.group_size[0])
             position_bias_w = torch.arange(1 - self.group_size[1], self.group_size[1])
@@ -289,15 +289,15 @@ class DPBlock(PSABlock):
 class C2DPB(C2PSA):
     def __init__(self, c1, c2, n=1, e=0.5):
         super().__init__(c1, c2, n, e)
-        
+
         self.m = nn.Sequential(*(DPBlock(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
-    
+
     def forward(self, x):
         """Processes the input tensor 'x' through a series of PSA blocks and returns the transformed tensor."""
         a, b = self.cv1(x).split((self.c, self.c), dim=1)
         b = self.m(b)
         return self.cv2(torch.cat((a, b), 1))
-        
+
 ######################################## CrossFormer end ########################################
 
 ######################################## ICLR2025 PolaFormer start ########################################
@@ -310,7 +310,7 @@ class PolaLinearAttention(nn.Module):
 
         self.h = hw[0]
         self.w = hw[1]
-        
+
         self.dim = dim
         self.num_heads = num_heads
         head_dim = dim // num_heads
@@ -329,7 +329,7 @@ class PolaLinearAttention(nn.Module):
 
         self.dwc = nn.Conv2d(in_channels=head_dim, out_channels=head_dim, kernel_size=kernel_size,
                              groups=head_dim, padding=kernel_size // 2)
-        
+
         self.power = nn.Parameter(torch.zeros(size=(1, self.num_heads, 1, self.head_dim)))
         self.alpha = alpha
 
@@ -352,27 +352,27 @@ class PolaLinearAttention(nn.Module):
 
         k = k + self.positional_encoding
         kernel_function = nn.ReLU()
-        
+
         scale = nn.Softplus()(self.scale)
         power = 1 + self.alpha * nn.functional.sigmoid(self.power)
-        
+
         q = q / scale
         k = k / scale
         q = q.reshape(B, N, self.num_heads, -1).permute(0, 2, 1, 3).contiguous()
         k = k.reshape(B, n, self.num_heads, -1).permute(0, 2, 1, 3).contiguous()
-        v = v.reshape(B, n, self.num_heads, -1).permute(0, 2, 1, 3).contiguous() 
-        
-        q_pos = kernel_function(q) ** power 
-        q_neg = kernel_function(-q) ** power 
-        k_pos = kernel_function(k) ** power 
-        k_neg = kernel_function(-k) ** power 
+        v = v.reshape(B, n, self.num_heads, -1).permute(0, 2, 1, 3).contiguous()
+
+        q_pos = kernel_function(q) ** power
+        q_neg = kernel_function(-q) ** power
+        k_pos = kernel_function(k) ** power
+        k_neg = kernel_function(-k) ** power
 
         q_sim = torch.cat([q_pos, q_neg],dim=-1)
         q_opp = torch.cat([q_neg, q_pos],dim=-1)
         k = torch.cat([k_pos, k_neg],dim=-1)
 
         v1,v2 = torch.chunk(v,2,dim=-1)
-        
+
         z = 1 / (q_sim @ k.mean(dim=-2, keepdim=True).transpose(-2, -1) + 1e-6)
         kv = (k.transpose(-2, -1) * (n ** -0.5)) @ (v1 * (n ** -0.5))
         x_sim = q_sim @ kv * z
@@ -385,7 +385,7 @@ class PolaLinearAttention(nn.Module):
 
         if self.sr_ratio > 1:
             v = nn.functional.interpolate(v.transpose(-2, -1).reshape(B * self.num_heads, -1, n), size=N, mode='linear').reshape(B, self.num_heads, -1, N).transpose(-2, -1)
-        
+
         v = v.reshape(B * self.num_heads, self.h, self.w, -1).permute(0, 3, 1, 2)
         v = self.dwc(v).reshape(B, C, N).permute(0, 2, 1)
         x = x + v
@@ -399,9 +399,9 @@ class PolaLinearAttention(nn.Module):
 class Polalock(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.attn = PolaLinearAttention(c, hw=[20, 20], num_heads=num_heads)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         BS, C, H, W = x.size()
@@ -412,9 +412,9 @@ class Polalock(PSABlock):
 class C2Pola(C2PSA):
     def __init__(self, c1, c2, n=1, e=0.5):
         super().__init__(c1, c2, n, e)
-        
+
         self.m = nn.Sequential(*(Polalock(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
-    
+
     def forward(self, x):
         """Processes the input tensor 'x' through a series of PSA blocks and returns the transformed tensor."""
         a, b = self.cv1(x).split((self.c, self.c), dim=1)
@@ -428,9 +428,9 @@ class C2Pola(C2PSA):
 class TSSAlock(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.attn = AttentionTSSA(c, num_heads=num_heads)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         BS, C, H, W = x.size()
@@ -441,9 +441,9 @@ class TSSAlock(PSABlock):
 class C2TSSA(C2PSA):
     def __init__(self, c1, c2, n=1, e=0.5):
         super().__init__(c1, c2, n, e)
-        
+
         self.m = nn.Sequential(*(TSSAlock(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
-    
+
     def forward(self, x):
         """Processes the input tensor 'x' through a series of PSA blocks and returns the transformed tensor."""
         a, b = self.cv1(x).split((self.c, self.c), dim=1)
@@ -458,9 +458,9 @@ class C2TSSA(C2PSA):
 class ASSAlock(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.attn = AdaptiveSparseSA(c, num_heads=num_heads, sparseAtt=True)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         BS, C, H, W = x.size()
@@ -471,9 +471,9 @@ class ASSAlock(PSABlock):
 class C2ASSA(C2PSA):
     def __init__(self, c1, c2, n=1, e=0.5):
         super().__init__(c1, c2, n, e)
-        
+
         self.m = nn.Sequential(*(ASSAlock(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
-    
+
     def forward(self, x):
         """Processes the input tensor 'x' through a series of PSA blocks and returns the transformed tensor."""
         a, b = self.cv1(x).split((self.c, self.c), dim=1)
@@ -512,7 +512,7 @@ class PSABlock_DYT(PSABlock):
 
         self.dyt1 = DynamicTanh(normalized_shape=c, channels_last=False)
         self.dyt2 = DynamicTanh(normalized_shape=c, channels_last=False)
-    
+
     def forward(self, x):
         x = x + self.attn(self.dyt1(x)) if self.add else self.attn(self.dyt1(x))
         x = x + self.ffn(self.dyt2(x)) if self.add else self.ffn(self.dyt2(x))
@@ -527,11 +527,11 @@ class C2PSA_DYT(C2PSA):
 class TSSAlock_DYT(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.dyt1 = DynamicTanh(normalized_shape=c, channels_last=False)
         self.dyt2 = DynamicTanh(normalized_shape=c, channels_last=False)
         self.attn = AttentionTSSA(c, num_heads=num_heads)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         BS, C, H, W = x.size()
@@ -548,11 +548,11 @@ class C2TSSA_DYT(C2PSA):
 class Polalock_DYT(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.dyt1 = DynamicTanh(normalized_shape=c, channels_last=False)
         self.dyt2 = DynamicTanh(normalized_shape=c, channels_last=False)
         self.attn = PolaLinearAttention(c, hw=[20, 20], num_heads=num_heads)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         BS, C, H, W = x.size()
@@ -567,7 +567,7 @@ class C2Pola_DYT(C2PSA):
         self.m = nn.Sequential(*(Polalock_DYT(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## CVPR2025 DynamicTanh end ########################################
-        
+
 ######################################## ICLR2024 FTIC start ########################################
 
 class PSABlock_FMFFN(PSABlock):
@@ -583,7 +583,7 @@ class C2PSA_FMFFN(C2PSA):
         self.m = nn.Sequential(*(PSABlock_FMFFN(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## ICLR2024 FTIC end ########################################
-        
+
 ######################################## CVPR2024 Transnext start ########################################
 
 class ConvolutionalGLU(nn.Module):
@@ -599,7 +599,7 @@ class ConvolutionalGLU(nn.Module):
         )
         self.fc2 = nn.Conv2d(hidden_features, out_features, 1)
         self.drop = nn.Dropout(drop)
-    
+
     # def forward(self, x):
     #     x, v = self.fc1(x).chunk(2, dim=1)
     #     x = self.dwconv(x) * v
@@ -632,13 +632,13 @@ class C2PSA_CGLU(C2PSA):
 ######################################## CVPR2024 Transnext end ########################################
 
 ######################################## WACV2025-SEMNet start ########################################
-        
+
 class PSABlock_SEFN(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
 
         self.ffn = SEFN(c, ffn_expansion_factor=2, bias=False)
-    
+
     def forward(self, x):
         x_spatial = x
         x = x + self.attn(x) if self.add else self.attn(x)
@@ -652,16 +652,16 @@ class C2PSA_SEFN(C2PSA):
         self.m = nn.Sequential(*(PSABlock_SEFN(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## WACV2025-SEMNet end ########################################
-        
+
 ######################################## CVPR2025-Mona start ########################################
-        
+
 class PSABlock_Mona(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
 
         self.mona1 = Mona(c)
         self.mona2 = Mona(c)
-    
+
     def forward(self, x):
         x = x + self.attn(x) if self.add else self.attn(x)
         x = self.mona1(x)
@@ -678,13 +678,13 @@ class C2PSA_Mona(C2PSA):
 class TSSAlock_DYT_Mona(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.dyt1 = DynamicTanh(normalized_shape=c, channels_last=False)
         self.dyt2 = DynamicTanh(normalized_shape=c, channels_last=False)
         self.mona1 = Mona(c)
         self.mona2 = Mona(c)
         self.attn = AttentionTSSA(c, num_heads=num_heads)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         BS, C, H, W = x.size()
@@ -710,7 +710,7 @@ class TSSAlock_DYT_Mona_SEFN(PSABlock):
         self.mona1 = Mona(c)
         self.mona2 = Mona(c)
         self.attn = AttentionTSSA(c, num_heads=num_heads)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         x_spatial = x
@@ -728,7 +728,7 @@ class C2TSSA_DYT_Mona_SEFN(C2PSA):
         self.m = nn.Sequential(*(TSSAlock_DYT_Mona_SEFN(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## CVPR2025-Mona end ########################################
-        
+
 ######################################## TransMamba start ########################################
 
 class PSABlock_SEFFN(PSABlock):
@@ -753,7 +753,7 @@ class TSSAlock_DYT_Mona_SEFFN(PSABlock):
         self.mona1 = Mona(c)
         self.mona2 = Mona(c)
         self.attn = AttentionTSSA(c, num_heads=num_heads)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         BS, C, H, W = x.size()
@@ -770,9 +770,9 @@ class C2TSSA_DYT_Mona_SEFFN(C2PSA):
         self.m = nn.Sequential(*(TSSAlock_DYT_Mona_SEFFN(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## TransMamba end ########################################
-        
+
 ######################################## CVPR2025 EVSSM start ########################################
-        
+
 class PSABlock_EDFFN(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
@@ -795,7 +795,7 @@ class TSSAlock_DYT_Mona_EDFFN(PSABlock):
         self.mona1 = Mona(c)
         self.mona2 = Mona(c)
         self.attn = AttentionTSSA(c, num_heads=num_heads)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         BS, C, H, W = x.size()
@@ -812,7 +812,7 @@ class C2TSSA_DYT_Mona_EDFFN(C2PSA):
         self.m = nn.Sequential(*(TSSAlock_DYT_Mona_EDFFN(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## CVPR2025 EVSSM end ########################################
-        
+
 ######################################## MSLA start ########################################
 
 class LinearAttention(nn.Module):
@@ -913,9 +913,9 @@ class MSLA(nn.Module):
 class MSLAlock(PSABlock):
     def __init__(self, c, attn_ratio=0.5, num_heads=4, shortcut=True) -> None:
         super().__init__(c, attn_ratio, num_heads, shortcut)
-        
+
         self.attn = MSLA(c, num_heads=num_heads)
-    
+
     def forward(self, x):
         """Executes a forward pass through PSABlock, applying attention and feed-forward layers to the input tensor."""
         BS, C, H, W = x.size()
@@ -926,9 +926,9 @@ class MSLAlock(PSABlock):
 class C2MSLA(C2PSA):
     def __init__(self, c1, c2, n=1, e=0.5):
         super().__init__(c1, c2, n, e)
-        
+
         self.m = nn.Sequential(*(MSLAlock(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
-    
+
     def forward(self, x):
         """Processes the input tensor 'x' through a series of PSA blocks and returns the transformed tensor."""
         a, b = self.cv1(x).split((self.c, self.c), dim=1)
@@ -936,7 +936,7 @@ class C2MSLA(C2PSA):
         return self.cv2(torch.cat((a, b), 1))
 
 ######################################## MSLA end ########################################
-    
+
 ######################################## ACM MM 2025 start ########################################
 
 class Attention_EPGO(nn.Module):
@@ -1024,7 +1024,7 @@ class C2PSA_EPGO(C2PSA):
         self.m = nn.Sequential(*(PSABlock_EPGO(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## ACM MM 2025 end ########################################
-        
+
 ######################################## IJCV2024 SRConvNet start ########################################
 
 class PSABlock_DML(PSABlock):
@@ -1040,11 +1040,11 @@ class C2PSA_DML(C2PSA):
         self.m = nn.Sequential(*(PSABlock_DML(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## IJCV2024 SRConvNet end ########################################
-        
+
 ######################################## TPAMI2025 LRFormer start ########################################
-        
+
 class LRSA(nn.Module):
-    def __init__(self, dim, num_heads=4, qkv_bias=False, qk_scale=None, attn_drop=0., proj_drop=0., 
+    def __init__(self, dim, num_heads=4, qkv_bias=False, qk_scale=None, attn_drop=0., proj_drop=0.,
         pooled_sizes=[11,8,6,4], q_pooled_size=16, q_conv=False):
 
         super().__init__()
@@ -1058,7 +1058,7 @@ class LRSA(nn.Module):
 
         self.q = nn.Sequential(nn.Linear(dim, dim, bias=qkv_bias))
         self.kv = nn.Sequential(nn.Linear(dim, dim * 2, bias=qkv_bias))
-        
+
         self.attn_drop = nn.Dropout(attn_drop)
         self.proj = nn.Linear(dim, dim)
         self.proj_drop = nn.Dropout(proj_drop)
@@ -1066,11 +1066,11 @@ class LRSA(nn.Module):
         self.pooled_sizes = pooled_sizes
         self.pools = nn.ModuleList()
         self.eps = 0.001
-        
+
         self.norm = nn.LayerNorm(dim)
-        
+
         self.q_pooled_size = q_pooled_size
-        
+
         # Useless code
         if q_conv and self.q_pooled_size > 1:
             self.q_conv = nn.Conv2d(dim, dim, kernel_size=3, padding=1, stride=1, groups=dim)
@@ -1078,19 +1078,19 @@ class LRSA(nn.Module):
         else:
             self.q_conv = None
             self.q_norm = None
-        
+
         self.d_convs = nn.ModuleList([nn.Conv2d(dim, dim, kernel_size=3, stride=1, padding=1, groups=dim) for temp in pooled_sizes])
 
     def forward(self, x):
         B, C, H, W = x.size()
         N = H * W
         x = x.flatten(2).permute(0, 2, 1) # B C H W -> B N C
-        
+
         if self.q_pooled_size > 1:
             # Too keep the W/H ratio of the features
             q_pooled_size = (self.q_pooled_size, round(W*float(self.q_pooled_size)/H + self.eps)) \
                 if W >= H else (round(H*float(self.q_pooled_size)/W + self.eps), self.q_pooled_size)
-            
+
             # Conduct fixed pooled size pooling on q
             q = F.adaptive_avg_pool2d(x.transpose(1, 2).reshape(B, C, H, W), q_pooled_size)
             _, _, H1, W1 = q.shape
@@ -1109,7 +1109,7 @@ class LRSA(nn.Module):
                 q = self.q(q).reshape(B, -1, self.num_heads, C // self.num_heads).permute(0, 2, 1, 3).contiguous()
             else:
                 q = self.q(x).reshape(B, -1, self.num_heads, C // self.num_heads).permute(0, 2, 1, 3).contiguous()
-        
+
         # Conduct Pyramid Pooling on K, V
         pools = []
         x_ = x.permute(0, 2, 1).reshape(B, C, H, W)
@@ -1118,10 +1118,10 @@ class LRSA(nn.Module):
             pool = F.adaptive_avg_pool2d(x_, pooled_size)
             pool = pool + l(pool)
             pools.append(pool.view(B, C, -1))
-        
+
         pools = torch.cat(pools, dim=2)
         pools = self.norm(pools.permute(0,2,1))
-        
+
         kv = self.kv(pools).reshape(B, -1, 2, self.num_heads, C // self.num_heads).permute(2, 0, 3, 1, 4)
         k, v = kv[0], kv[1]
 
@@ -1130,12 +1130,12 @@ class LRSA(nn.Module):
         attn = attn.softmax(dim=-1)
         x = (attn @ v)   # B N C
         x = x.transpose(1,2).reshape(B, -1, C)
-        
+
         x = self.proj(x)
-        
+
         # Bilinear upsampling for residual connection
         x = x.transpose(1, 2).reshape(B, C, H1, W1)
-        if self.q_pooled_size > 1: 
+        if self.q_pooled_size > 1:
             x = F.interpolate(x, size=(H, W), mode='bilinear', align_corners=False)
 
         return x
@@ -1153,7 +1153,7 @@ class C2PSA_LRSA(C2PSA):
         self.m = nn.Sequential(*(PSABlock_LRSA(self.c, attn_ratio=0.5, num_heads=self.c // 64) for _ in range(n)))
 
 ######################################## TPAMI2025 LRFormer end ########################################
-        
+
 ######################################## ICCV2025 Rectifying Magnitude Neglect in Linear Attention start ########################################
 
 def rotate_every_two(x):
@@ -1180,7 +1180,7 @@ class RoPE(nn.Module):
         angle = 1.0 / (10000 ** torch.linspace(0, 1, embed_dim // num_heads // 4))
         angle = angle.unsqueeze(-1).repeat(1, 2).flatten()
         self.register_buffer('angle', angle)
-    
+
     def forward(self, slen: Tuple[int]):
         '''
         slen: (h, w)

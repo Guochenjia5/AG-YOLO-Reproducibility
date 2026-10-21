@@ -1,0 +1,91 @@
+{
+  "protocol": {
+    "classes": [
+      "Person",
+      "Car",
+      "Bicycle",
+      "OtherVehicle"
+    ],
+    "iou_thresholds": [
+      0.5,
+      0.55,
+      0.6,
+      0.65,
+      0.7,
+      0.75,
+      0.8,
+      0.85,
+      0.9,
+      0.95
+    ],
+    "ap_interpolation": "101-point",
+    "precision_recall_rule": "one shared confidence threshold maximizing mean per-class F1 at IoU 0.50",
+    "ignore_rule": "drop predictions with intersection/prediction-area >= 0.5 against any DontCare box",
+    "scope": "complete official split when confirmed by provenance; reviewer-aligned evaluator"
+  },
+  "provenance": {
+    "dataset_scope": "complete official HIT-UAV split; four target classes; DontCare stored as ignore regions",
+    "author_evaluator_status": "repository AP.py is marked unfinished and does not implement a complete AP calculation; the rule below is an explicit reviewer-aligned implementation",
+    "official_repository": "https://github.com/suojiashun/HIT-UAV-Infrared-Thermal-Dataset",
+    "official_json_sha256": "f29545df4b27bb09fa705b0d2865f69f5ef7cdf81930b84dcc9dd0df63c71d19",
+    "geometry_audit_status": "passed",
+    "geometry_audit_split": {
+      "official_images": 579,
+      "official_annotations": 4811,
+      "maximum_normalized_coordinate_error": 5.000000025123796e-09,
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "status": "passed"
+    }
+  },
+  "images": 579,
+  "predictions_before_ignore": 28209,
+  "predictions_removed_by_ignore": 146,
+  "operating_confidence": 0.489,
+  "precision": 0.8968416458777357,
+  "recall": 0.8308963334864263,
+  "mAP50": 0.8543330473436989,
+  "mAP50_95": 0.5434013757617459,
+  "per_class": [
+    {
+      "class_id": 0,
+      "class_name": "Person",
+      "ground_truth_boxes": 2611,
+      "predictions_after_ignore": 12788,
+      "AP50": 0.9082471404557845,
+      "AP50_95": 0.48871498807418606,
+      "precision_at_operating_point": 0.9067209775967413,
+      "recall_at_operating_point": 0.8525469168900804
+    },
+    {
+      "class_id": 1,
+      "class_name": "Car",
+      "ground_truth_boxes": 1339,
+      "predictions_after_ignore": 10278,
+      "AP50": 0.9528120982377593,
+      "AP50_95": 0.6807538686576189,
+      "precision_at_operating_point": 0.9207630227439472,
+      "recall_at_operating_point": 0.9372666168782674
+    },
+    {
+      "class_id": 2,
+      "class_name": "Bicycle",
+      "ground_truth_boxes": 796,
+      "predictions_after_ignore": 4576,
+      "AP50": 0.8828337317593595,
+      "AP50_95": 0.5320462896345828,
+      "precision_at_operating_point": 0.9027397260273973,
+      "recall_at_operating_point": 0.8278894472361809
+    },
+    {
+      "class_id": 3,
+      "class_name": "OtherVehicle",
+      "ground_truth_boxes": 34,
+      "predictions_after_ignore": 421,
+      "AP50": 0.6734392189218922,
+      "AP50_95": 0.47209035668059557,
+      "precision_at_operating_point": 0.8571428571428571,
+      "recall_at_operating_point": 0.7058823529411765
+    }
+  ]
+}

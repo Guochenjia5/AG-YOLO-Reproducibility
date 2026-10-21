@@ -1,0 +1,47 @@
+{
+  "protocol": "complete official HIT-UAV split, four classes, DontCare ignore regions",
+  "dataset": "D:\\gcj\\hit-uav-official-ignore\\dataset_ignore.yaml",
+  "output": "D:\\gcj\\hituav-official-4class",
+  "expected_runs": 13,
+  "commands": [
+    [
+      "D:\\Anaconda3\\envs\\learn_cuda\\python.exe",
+      "C:\\Users\\lenovo\\Documents\\Codex\\2026-10-14\\zh\\work\\ag-yolo-revision\\reproducibility\\run_hituav_fourclass_comparison.py",
+      "--stage",
+      "seed0",
+      "--dataset",
+      "D:\\gcj\\hit-uav-official-ignore\\dataset_ignore.yaml",
+      "--output",
+      "D:\\gcj\\hituav-official-4class",
+      "--device",
+      "0",
+      "--skip-existing"
+    ],
+    [
+      "D:\\Anaconda3\\envs\\learn_cuda\\python.exe",
+      "C:\\Users\\lenovo\\Documents\\Codex\\2026-10-14\\zh\\work\\ag-yolo-revision\\reproducibility\\run_hituav_fourclass_remaining.py",
+      "--stage",
+      "seed0",
+      "--dataset",
+      "D:\\gcj\\hit-uav-official-ignore\\dataset_ignore.yaml",
+      "--output",
+      "D:\\gcj\\hituav-official-4class",
+      "--device",
+      "0",
+      "--skip-existing"
+    ],
+    [
+      "D:\\Anaconda3\\envs\\learn_cuda\\python.exe",
+      "C:\\Users\\lenovo\\Documents\\Codex\\2026-10-14\\zh\\work\\ag-yolo-revision\\reproducibility\\run_hituav_fourclass_comparison.py",
+      "--stage",
+      "core-extra",
+      "--dataset",
+      "D:\\gcj\\hit-uav-official-ignore\\dataset_ignore.yaml",
+      "--output",
+      "D:\\gcj\\hituav-official-4class",
+      "--device",
+      "0",
+      "--skip-existing"
+    ]
+  ]
+}

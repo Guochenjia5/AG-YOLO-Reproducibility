@@ -13,39 +13,39 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 WORKER = HERE / "train_hituav_fourclass_model.py"
 EVALUATOR = HERE / "evaluate_hituav_ignore.py"
-DATASET = Path("data/hit-uav-ignore/dataset_ignore.yaml")
-DEFAULT_OUTPUT = Path("runs/hituav-fourclass")
+DATASET = Path(r"D:\gcj\hit-uav-ignore\dataset_ignore.yaml")
+DEFAULT_OUTPUT = Path(r"D:\gcj\hituav-revision-4class")
 
 MODELS = [
     {
         "name": "yolov6n",
-        "repo": Path("third_party/ultralytics-baselines"),
-        "config": Path("third_party/ultralytics-baselines/ultralytics/cfg/models/v6/yolov6.yaml"),
+        "repo": Path(r"D:\gcj\yolo11"),
+        "config": Path(r"D:\gcj\yolo11\ultralytics\cfg\models\v6\yolov6.yaml"),
     },
     {
         "name": "yolov8n",
-        "repo": Path("third_party/ultralytics-baselines"),
-        "config": Path("third_party/ultralytics-baselines/ultralytics/cfg/models/v8/yolov8.yaml"),
+        "repo": Path(r"D:\gcj\yolo11"),
+        "config": Path(r"D:\gcj\yolo11\ultralytics\cfg\models\v8\yolov8.yaml"),
     },
     {
         "name": "yolov9t",
-        "repo": Path("third_party/ultralytics-baselines"),
-        "config": Path("third_party/ultralytics-baselines/ultralytics/cfg/models/v9/yolov9t.yaml"),
+        "repo": Path(r"D:\gcj\yolo11"),
+        "config": Path(r"D:\gcj\yolo11\ultralytics\cfg\models\v9\yolov9t.yaml"),
     },
     {
         "name": "yolov11n",
-        "repo": Path("third_party/ultralytics"),
-        "config": Path("third_party/ultralytics/ultralytics/cfg/models/11/yolo11.yaml"),
+        "repo": Path(r"D:\gcj\ultralytics-yolo11-main"),
+        "config": Path(r"D:\gcj\ultralytics-yolo11-main\ultralytics\cfg\models\11\yolo11.yaml"),
     },
     {
         "name": "yolov12n",
-        "repo": Path("third_party/ultralytics"),
-        "config": Path("third_party/ultralytics/ultralytics/cfg/models/12/yolo12.yaml"),
+        "repo": Path(r"D:\gcj\ultralytics-yolo11-main"),
+        "config": Path(r"D:\gcj\ultralytics-yolo11-main\ultralytics\cfg\models\12\yolo12.yaml"),
     },
     {
         "name": "ag_yolo",
-        "repo": Path("third_party/ultralytics"),
-        "config": Path("third_party/ultralytics/ultralytics/cfg/models/11/yolo11-MAN-CTA-C2CGA.yaml"),
+        "repo": Path(r"D:\gcj\ultralytics-yolo11-main"),
+        "config": Path(r"D:\gcj\ultralytics-yolo11-main\ultralytics\cfg\models\11\yolo11-MAN-CTA-C2CGA.yaml"),
     },
 ]
 

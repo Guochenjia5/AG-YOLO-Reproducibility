@@ -1,0 +1,76 @@
+{
+  "timestamp_utc": "2026-10-14T14:31:53.921363+00:00",
+  "model": "AG-YOLO",
+  "weights": "D:\\gcj\\ultralytics-yolo11-main\\runs\\An guang\\train\\yolo11-MAN-CTA-C2CGA\\weights\\best.pt",
+  "protocol": {
+    "scope": "fused PyTorch model forward pass only",
+    "disk_io_included": false,
+    "preprocessing_included": false,
+    "postprocessing_nms_included": false,
+    "cuda_synchronization": true,
+    "batch_size": 1,
+    "input_size": [
+      640,
+      640
+    ],
+    "precision": "FP32",
+    "warmup_iterations": 200,
+    "timed_repeats": 5,
+    "iterations_per_repeat": 1000
+  },
+  "environment": {
+    "python": "3.9.21",
+    "torch": "2.1.2+cu118",
+    "cuda": "11.8",
+    "device": "cuda:0",
+    "gpu": "NVIDIA GeForce RTX 4090 D"
+  },
+  "summary": {
+    "latency_ms_mean_across_repeats": 7.526694319999987,
+    "latency_ms_sd_across_repeats": 0.0942011258890692,
+    "fps_mean_across_repeats": 132.87706916329208,
+    "fps_sd_across_repeats": 1.6599043177474397
+  },
+  "runs": [
+    {
+      "repeat": 1,
+      "latency_ms_mean": 7.401826500000029,
+      "latency_ms_sd": 0.6352890936575872,
+      "latency_ms_median": 7.249700000000026,
+      "latency_ms_p95": 8.479309999999574,
+      "fps": 135.10178872741696
+    },
+    {
+      "repeat": 2,
+      "latency_ms_mean": 7.55119929999994,
+      "latency_ms_sd": 0.7323805675229188,
+      "latency_ms_median": 7.365450000000884,
+      "latency_ms_p95": 9.08262000000164,
+      "fps": 132.4292950392672
+    },
+    {
+      "repeat": 3,
+      "latency_ms_mean": 7.5003553999999895,
+      "latency_ms_sd": 0.7105812598554346,
+      "latency_ms_median": 7.323650000000015,
+      "latency_ms_p95": 9.023525000000276,
+      "fps": 133.3270154104966
+    },
+    {
+      "repeat": 4,
+      "latency_ms_mean": 7.517304099999998,
+      "latency_ms_sd": 0.6958863600035752,
+      "latency_ms_median": 7.370850000000928,
+      "latency_ms_p95": 8.861155000004217,
+      "fps": 133.0264130195292
+    },
+    {
+      "repeat": 5,
+      "latency_ms_mean": 7.66278629999998,
+      "latency_ms_sd": 0.9272322232525287,
+      "latency_ms_median": 7.4314500000021155,
+      "latency_ms_p95": 9.542924999999514,
+      "fps": 130.50083361975038
+    }
+  ]
+}

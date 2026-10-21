@@ -1,0 +1,26 @@
+{
+  "data": "D:\\gcj\\ultralytics-yolo11-main\\ultralytics\\cfg\\datasets\\An guang.yaml",
+  "seeds": [
+    0
+  ],
+  "epochs": 300,
+  "batch": 8,
+  "imgsz": 640,
+  "workers": 4,
+  "optimizer": "SGD",
+  "lr0": 0.01,
+  "lrf": 0.01,
+  "momentum": 0.937,
+  "weight_decay": 0.0005,
+  "warmup_epochs": 3.0,
+  "patience": 0,
+  "amp": false,
+  "deterministic": true,
+  "augmentation_alignment": {
+    "close_mosaic": 0,
+    "copy_paste": 0.0,
+    "copy_paste_mode": "flip"
+  },
+  "evaluation": "Ultralytics validation split, same data YAML and image size as AG-YOLO",
+  "initialization_difference_from_ag_yolo": "ConvNeXt-Nano ImageNet backbone initialization; the custom backbone is incompatible with yolo11n.pt. The neck, attention modules and detector are randomly initialized."
+}

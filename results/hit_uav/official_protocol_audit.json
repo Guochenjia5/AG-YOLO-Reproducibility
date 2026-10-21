@@ -1,0 +1,32 @@
+{
+  "dataset": "D:\\gcj\\hit-uav-official-ignore",
+  "official_json_root": "C:\\Users\\lenovo\\Documents\\Codex\\2026-10-14\\zh\\work\\ag-yolo-revision\\official-hituav",
+  "coordinate_tolerance": 1e-06,
+  "splits": {
+    "train": {
+      "official_images": 2029,
+      "official_annotations": 17628,
+      "maximum_normalized_coordinate_error": 5.000000025123796e-09,
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "status": "passed"
+    },
+    "val": {
+      "official_images": 290,
+      "official_annotations": 2460,
+      "maximum_normalized_coordinate_error": 5.000000025123796e-09,
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "status": "passed"
+    },
+    "test": {
+      "official_images": 579,
+      "official_annotations": 4811,
+      "maximum_normalized_coordinate_error": 5.000000025123796e-09,
+      "mismatch_count": 0,
+      "mismatch_examples": [],
+      "status": "passed"
+    }
+  },
+  "status": "passed"
+}

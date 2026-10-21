@@ -25,11 +25,11 @@ def metric_value(metrics, attribute: str) -> float:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--repo", type=Path, default=Path("third_party/ultralytics"))
+    parser.add_argument("--repo", type=Path, default=Path(r"D:\gcj\ultralytics-yolo11-main"))
     parser.add_argument(
         "--data",
         type=Path,
-        default=Path("third_party/ultralytics/ultralytics/cfg/datasets/An guang.yaml"),
+        default=Path(r"D:\gcj\ultralytics-yolo11-main\ultralytics\cfg\datasets\An guang.yaml"),
     )
     parser.add_argument("--seeds", nargs="+", type=int, default=[0, 1, 2])
     parser.add_argument("--device", default="0")

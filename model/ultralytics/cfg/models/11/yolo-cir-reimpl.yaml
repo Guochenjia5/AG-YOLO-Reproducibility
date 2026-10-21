@@ -1,0 +1,39 @@
+# Independent YOLO-CIR reimplementation for same-protocol comparison.
+# This is paper-guided code, not the authors' official implementation.
+
+nc: 80
+depth_multiple: 1.0
+width_multiple: 1.0
+
+# The custom backbone returns P2/4, P3/8, P4/16 and P5/32.  In this parser,
+# those tensors occupy saved-output indices 1, 2, 3 and 4 respectively.
+backbone:
+  - [-1, 1, yolo_cir_reimpl_m, []]
+  - [-1, 1, SPPF, [640, 5]]
+  - [-1, 1, CIRChannelAttention, []]
+
+head:
+  - [-1, 1, nn.Upsample, [null, 2, nearest]]
+  - [[-1, 3], 1, Concat, [1]]
+  - [-1, 3, C3, [320, false]]
+  - [-1, 1, CIRSplitAttention, []]
+
+  - [-1, 1, nn.Upsample, [null, 2, nearest]]
+  - [[-1, 2], 1, Concat, [1]]
+  - [-1, 3, C3, [160, false]]
+  - [-1, 1, CIRSpatialAttention, []]
+  - [-1, 1, CIRSplitAttention, []]
+
+  - [-1, 1, Conv, [160, 3, 2]]
+  - [[-1, 10], 1, Concat, [1]]
+  - [-1, 3, C3, [320, false]]
+  - [-1, 1, CIRChannelAttention, []]
+  - [-1, 1, CIRSplitAttention, []]
+
+  - [-1, 1, Conv, [320, 3, 2]]
+  - [[-1, 6], 1, Concat, [1]]
+  - [-1, 3, C3, [640, false]]
+  - [-1, 1, CIRChannelAttention, []]
+  - [-1, 1, CIRSplitAttention, []]
+
+  - [[15, 20, 25], 1, Detect, [nc]]

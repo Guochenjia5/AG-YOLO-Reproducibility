@@ -1,0 +1,7 @@
+model,seed,precision,recall,mAP50,mAP50_95,checkpoint
+yolov11n,0,0.8095561147621799,0.7588032987495172,0.8193221257957097,0.6334114077867254,D:\gcj\night-drone-revision-multiseed\yolov11n_seed0\weights\best.pt
+yolov11n,1,0.7821205086658298,0.7892836111904119,0.8173284297028053,0.6306169956312885,D:\gcj\night-drone-revision-multiseed\yolov11n_seed1\weights\best.pt
+yolov11n,2,0.7786600138442207,0.7874666916102393,0.8158945110574655,0.6315328871721322,D:\gcj\night-drone-revision-multiseed\yolov11n_seed2\weights\best.pt
+ag_yolo,0,0.7873087497586599,0.7764990914708116,0.8064153348766314,0.6203160592409203,D:\gcj\night-drone-revision-multiseed\ag_yolo_seed0\weights\best.pt
+ag_yolo,1,0.8003252426585157,0.7758234946918292,0.818587489271519,0.6280581331629136,D:\gcj\night-drone-revision-multiseed\ag_yolo_seed1\weights\best.pt
+ag_yolo,2,0.7736564027293241,0.7813754621024851,0.8068906785881647,0.6198783335528222,D:\gcj\night-drone-revision-multiseed\ag_yolo_seed2\weights\best.pt

@@ -1,0 +1,77 @@
+{
+  "protocol": "complete official HIT-UAV split; four target classes; DontCare stored as ignore regions",
+  "official_repository": "https://github.com/suojiashun/HIT-UAV-Infrared-Thermal-Dataset",
+  "prepared_source": "D:\\gcj\\hit-uav-ignore",
+  "official_json_root": "C:\\Users\\lenovo\\Documents\\Codex\\2026-10-14\\zh\\work\\ag-yolo-revision\\official-hituav",
+  "output": "D:\\gcj\\hit-uav-official-ignore",
+  "splits": {
+    "train": {
+      "official_images": 2029,
+      "official_annotations": 17628,
+      "four_class_boxes": 17518,
+      "dontcare_boxes": 110,
+      "empty_target_images": 21,
+      "reused_images": 2008,
+      "downloaded_zero_annotation_images": 21,
+      "downloaded_files": [
+        "1_130_50_0_10014.jpg",
+        "1_130_40_0_10004.jpg",
+        "1_130_70_0_10093.jpg",
+        "1_130_40_0_09991.jpg",
+        "1_130_40_0_09987.jpg",
+        "1_130_60_0_10077.jpg",
+        "1_130_80_0_10130.jpg",
+        "1_130_40_0_09994.jpg",
+        "1_130_40_0_10002.jpg",
+        "1_130_40_0_09988.jpg",
+        "1_130_40_0_09995.jpg",
+        "1_120_70_0_09376.jpg",
+        "1_130_40_0_09999.jpg",
+        "1_130_80_0_10138.jpg",
+        "1_130_80_0_10125.jpg",
+        "1_130_70_0_10104.jpg",
+        "1_130_40_0_09992.jpg",
+        "1_130_40_0_09997.jpg",
+        "1_130_90_0_04049.jpg",
+        "1_130_40_0_09998.jpg",
+        "1_120_70_0_09375.jpg"
+      ],
+      "json_sha256": "4e6e93966ec366ce63aa120f038c52e792b02811ff2ab2d43ef56e6561aceff1"
+    },
+    "val": {
+      "official_images": 290,
+      "official_annotations": 2460,
+      "four_class_boxes": 2453,
+      "dontcare_boxes": 7,
+      "empty_target_images": 3,
+      "reused_images": 287,
+      "downloaded_zero_annotation_images": 3,
+      "downloaded_files": [
+        "1_130_60_0_10056.jpg",
+        "1_130_40_0_10003.jpg",
+        "1_130_40_0_09996.jpg"
+      ],
+      "json_sha256": "9b34b423b6b1602b87e88b7f9864fa4273b73c280846ba6cb1b90c2e6761873e"
+    },
+    "test": {
+      "official_images": 579,
+      "official_annotations": 4811,
+      "four_class_boxes": 4780,
+      "dontcare_boxes": 31,
+      "empty_target_images": 8,
+      "reused_images": 571,
+      "downloaded_zero_annotation_images": 8,
+      "downloaded_files": [
+        "1_130_40_0_09985.jpg",
+        "1_130_40_0_09993.jpg",
+        "1_130_70_0_10097.jpg",
+        "1_130_40_0_09986.jpg",
+        "1_130_40_0_10005.jpg",
+        "1_130_40_0_10000.jpg",
+        "1_130_60_0_10045.jpg",
+        "1_130_40_0_09989.jpg"
+      ],
+      "json_sha256": "f29545df4b27bb09fa705b0d2865f69f5ef7cdf81930b84dcc9dd0df63c71d19"
+    }
+  }
+}

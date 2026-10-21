@@ -180,13 +180,13 @@ def build(prepared: Path, json_root: Path, output: Path, raw_base: str) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--prepared", type=Path, default=Path("data/hit-uav-ignore"))
+    parser.add_argument("--prepared", type=Path, default=Path(r"D:\gcj\hit-uav-ignore"))
     parser.add_argument(
         "--json-root",
         type=Path,
         default=Path(__file__).resolve().parents[1] / "official-hituav",
     )
-    parser.add_argument("--output", type=Path, default=Path("data/hit-uav-official-ignore"))
+    parser.add_argument("--output", type=Path, default=Path(r"D:\gcj\hit-uav-official-ignore"))
     parser.add_argument("--raw-base", default=RAW_BASE)
     args = parser.parse_args()
     print(json.dumps(build(args.prepared, args.json_root, args.output, args.raw_base), indent=2, ensure_ascii=False))

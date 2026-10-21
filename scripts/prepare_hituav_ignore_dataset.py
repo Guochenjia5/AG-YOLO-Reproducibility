@@ -130,8 +130,8 @@ def prepare(source: Path, output: Path, splits: list[str], image_mode: str) -> d
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--source", type=Path, default=Path("data/hit-uav"))
-    parser.add_argument("--output", type=Path, default=Path("data/hit-uav-ignore"))
+    parser.add_argument("--source", type=Path, default=Path(r"D:\gcj\hit-uav"))
+    parser.add_argument("--output", type=Path, default=Path(r"D:\gcj\hit-uav-ignore"))
     parser.add_argument("--splits", nargs="+", default=["train", "val", "test"])
     parser.add_argument("--image-mode", choices=["hardlink", "symlink", "copy"], default="hardlink")
     args = parser.parse_args()

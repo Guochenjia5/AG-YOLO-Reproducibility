@@ -1,0 +1,37 @@
+{
+  "model_label": "YOLO-HVS independent reimplementation",
+  "data": "D:\\gcj\\ultralytics-yolo11-main\\ultralytics\\cfg\\datasets\\An guang.yaml",
+  "seeds": [
+    0
+  ],
+  "epochs": 300,
+  "batch": 32,
+  "imgsz": 640,
+  "workers": 4,
+  "fraction": 1.0,
+  "optimizer": "SGD",
+  "lr0": 0.01,
+  "lrf": 0.01,
+  "momentum": 0.937,
+  "weight_decay": 0.0005,
+  "warmup_epochs": 3.0,
+  "patience": 0,
+  "amp": false,
+  "deterministic": true,
+  "augmentation_alignment": {
+    "close_mosaic": 0,
+    "copy_paste": 0.0,
+    "copy_paste_mode": "flip"
+  },
+  "checkpoint_for_independent_validation": "best.pt",
+  "evaluation": "Ultralytics validation split, same data YAML and image size as AG-YOLO",
+  "comparison_scope": "Night-Drone Vehicle same-data independent reimplementation",
+  "differences_from_yolo_hvs_paper": {
+    "batch": "32 here versus 8 reported in the paper",
+    "momentum": "0.937 here versus 0.9 reported in the paper",
+    "amp": "disabled here; the paper does not disclose AMP",
+    "epochs": "300 here; the paper does not disclose epoch count",
+    "imgsz": "640 here; the paper does not disclose training image size",
+    "dataset": "Night-Drone Vehicle subset here versus full DroneVehicle in the paper"
+  }
+}

@@ -13,26 +13,26 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 WORKER = HERE / "train_hituav_fourclass_model.py"
 EVALUATOR = HERE / "evaluate_hituav_ignore.py"
-DATASET = Path("data/hit-uav-ignore/dataset_ignore.yaml")
-DEFAULT_OUTPUT = Path("runs/hituav-fourclass")
+DATASET = Path(r"D:\gcj\hit-uav-ignore\dataset_ignore.yaml")
+DEFAULT_OUTPUT = Path(r"D:\gcj\hituav-revision-4class")
 
 # These are the three entries in the manuscript's YOLO comparison table that
 # are not yet present in the corrected four-class HIT-UAV results.
 MODELS = [
     {
         "name": "yolov5n",
-        "repo": Path("third_party/ultralytics-baselines"),
-        "config": Path("third_party/ultralytics-baselines/ultralytics/cfg/models/v5/yolov5.yaml"),
+        "repo": Path(r"D:\gcj\yolo11"),
+        "config": Path(r"D:\gcj\yolo11\ultralytics\cfg\models\v5\yolov5.yaml"),
     },
     {
         "name": "yolov10n",
-        "repo": Path("third_party/ultralytics-baselines"),
-        "config": Path("third_party/ultralytics-baselines/ultralytics/cfg/models/v10/yolov10n.yaml"),
+        "repo": Path(r"D:\gcj\yolo11"),
+        "config": Path(r"D:\gcj\yolo11\ultralytics\cfg\models\v10\yolov10n.yaml"),
     },
     {
         "name": "yolov13n",
-        "repo": Path("third_party/ultralytics"),
-        "config": Path("third_party/ultralytics/ultralytics/cfg/models/13/yolo13.yaml"),
+        "repo": Path(r"D:\gcj\ultralytics-yolo11-main"),
+        "config": Path(r"D:\gcj\ultralytics-yolo11-main\ultralytics\cfg\models\13\yolo13.yaml"),
     },
 ]
 

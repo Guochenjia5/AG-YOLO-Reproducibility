@@ -1,0 +1,10 @@
+path: D:/gcj/hit-uav-official-ignore
+train: images/train
+val: images/val
+test: images/test
+names:
+  0: Person
+  1: Car
+  2: Bicycle
+  3: OtherVehicle
+nc: 4
