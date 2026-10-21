@@ -144,5 +144,5 @@ figure10_runs = [
 ]
 
 plot_curves("Fig8", figure8_runs)
-plot_curves("Fig10", figure10_runs, shared_legend=True, legend_columns=2)
+plot_curves("Fig10", figure10_runs)
 print("Generated vector and raster exports for Fig8 and Fig10.")

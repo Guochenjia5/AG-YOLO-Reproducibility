@@ -391,8 +391,8 @@
   },
   {
     "path": "scripts/generate_vector_training_curves.py",
-    "size": 4930,
-    "sha256": "e09335b61590ede8cee102649c626bf0c39f01d30c5f36021d712d9f280d5fc5"
+    "size": 4892,
+    "sha256": "60517ed56476412ffb0bcef8bd9ce4677d50a7201d1be5ca275ae044e3282387"
   },
   {
     "path": "scripts/prepare_hituav_ignore_dataset.py",
