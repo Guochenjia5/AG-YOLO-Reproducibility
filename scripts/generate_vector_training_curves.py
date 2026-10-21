@@ -46,6 +46,7 @@ def plot_curves(
     runs: list[tuple[str, Path]],
     *,
     shared_legend: bool = False,
+    legends_below_axes: bool = False,
     legend_columns: int = 2,
 ) -> None:
     mpl.rcParams.update(
@@ -57,7 +58,7 @@ def plot_curves(
         }
     )
 
-    figure_height = 10.8 if shared_legend else 10.0
+    figure_height = 12.0 if legends_below_axes else (10.8 if shared_legend else 10.0)
     fig, axes = plt.subplots(2, 2, figsize=(10.0, figure_height))
     axes = axes.ravel()
 
@@ -80,7 +81,25 @@ def plot_curves(
         axis.set_title(title)
         axis.set_xlabel("epoch")
         axis.grid(True, linestyle="--", alpha=0.35)
-        if not shared_legend:
+        if legends_below_axes:
+            # Long ablation labels need a dedicated band.  A fixed-width
+            # legend below each axis keeps every box inside its subplot width
+            # and leaves the data area unobstructed.
+            axis.legend(
+                loc="upper left",
+                bbox_to_anchor=(0.0, -0.16, 1.0, 0.0),
+                mode="expand",
+                borderaxespad=0.0,
+                fontsize=6.2,
+                ncol=legend_columns,
+                frameon=True,
+                handlelength=1.6,
+                handletextpad=0.45,
+                columnspacing=0.8,
+                labelspacing=0.3,
+                borderpad=0.35,
+            )
+        elif not shared_legend:
             axis.legend(loc="lower right", fontsize=7.5, ncol=2)
 
     if shared_legend:
@@ -99,6 +118,8 @@ def plot_curves(
             columnspacing=1.8,
         )
         fig.tight_layout(rect=(0.0, 0.16, 1.0, 1.0))
+    elif legends_below_axes:
+        fig.subplots_adjust(left=0.075, right=0.985, top=0.96, bottom=0.085, hspace=0.52, wspace=0.18)
     else:
         fig.tight_layout()
 
@@ -144,5 +165,5 @@ figure10_runs = [
 ]
 
 plot_curves("Fig8", figure8_runs)
-plot_curves("Fig10", figure10_runs)
+plot_curves("Fig10", figure10_runs, legends_below_axes=True, legend_columns=2)
 print("Generated vector and raster exports for Fig8 and Fig10.")
