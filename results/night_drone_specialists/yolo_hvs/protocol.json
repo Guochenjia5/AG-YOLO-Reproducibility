@@ -23,7 +23,8 @@
     "copy_paste": 0.0,
     "copy_paste_mode": "flip"
   },
-  "checkpoint_for_independent_validation": "best.pt",
+  "checkpoint_for_manuscript_comparison": "last.pt",
+  "checkpoint_policy": "The manuscript table and curves use the final-epoch last.pt result. best.pt was validated separately and is retained only in best_checkpoint_validation_results.csv as a supplementary diagnostic.",
   "evaluation": "Ultralytics validation split, same data YAML and image size as AG-YOLO",
   "comparison_scope": "Night-Drone Vehicle same-data independent reimplementation",
   "differences_from_yolo_hvs_paper": {

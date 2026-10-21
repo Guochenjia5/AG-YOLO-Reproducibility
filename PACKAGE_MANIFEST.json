@@ -281,8 +281,8 @@
   },
   {
     "path": "results/night_drone_specialists/yolo_cir/best_checkpoint_validation_results.csv",
-    "size": 238,
-    "sha256": "9d0dd448a121c79f04eae2a18f39b39657f6ea7dca03695a419effd990f4c88c"
+    "size": 250,
+    "sha256": "9ce3562dc973ba05904d6d9e78d25c0cbf5471f689d031a92c1e4dbf64aa02f4"
   },
   {
     "path": "results/night_drone_specialists/yolo_cir/final_epoch_results.csv",
@@ -316,8 +316,8 @@
   },
   {
     "path": "results/night_drone_specialists/yolo_hvs/protocol.json",
-    "size": 1228,
-    "sha256": "3f43fbb8188f4e19156f9ef5dfb37c2424729474d118418872efee2e7902f4f9"
+    "size": 1448,
+    "sha256": "57ff1ec08b212ae441e279700dd516870868b7029a78af4d3f571b4a66a8d190"
   },
   {
     "path": "results/night_drone_specialists/yolo_hvs/reimplementation_audit.json",

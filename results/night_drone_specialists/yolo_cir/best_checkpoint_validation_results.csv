@@ -1,2 +1,2 @@
 model,seed,precision,recall,mAP50,mAP50_95,checkpoint
-YOLO-CIR reimplementation,0,0.776479759127107,0.7503375823065161,0.7814022272681559,0.5931303206886629,D:\gcj\night-drone-yolo-cir-reimpl-b8-fp32\yolo_cir_reimpl_seed0\weights\best.pt
+YOLO-CIR independent reimplementation,0,0.776479759127107,0.7503375823065161,0.7814022272681559,0.5931303206886629,D:\gcj\night-drone-yolo-cir-reimpl-b8-fp32\yolo_cir_reimpl_seed0\weights\best.pt
